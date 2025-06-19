@@ -166,3 +166,12 @@ a {
     margin-top: 10px;
     font-size: 14px;
 }
+
+label {
+    display: block;
+    color: #c7bfff;
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    letter-spacing: 0.3px;
+}
