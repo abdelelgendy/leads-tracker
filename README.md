@@ -8,12 +8,8 @@ A lightweight Chrome extension to effortlessly save, organize, and revisit your 
 
 * [Features](#-features)
 * [Demo](#-demo)
-* [Installation](#-installation)
-* [Configuration](#-configuration)
 * [Usage](#-usage)
 * [Tech Stack](#-tech-stack)
-* [Contributing](#-contributing)
-* [License](#-license)
 
 ---
 
@@ -34,43 +30,6 @@ A lightweight Chrome extension to effortlessly save, organize, and revisit your 
 2. Enter or paste a URL into the input field.
 3. Click **SAVE INPUT** (or press Enter) to store the lead.
 4. Double-click **DELETE ALL** to remove every saved lead.
-
----
-
-## 🚀 Installation
-
-1. Clone this repository:
-
-   ```bash
-   git clone https://github.com/your-username/leads-tracker.git
-   ```
-2. Open Chrome and navigate to `chrome://extensions/`.
-3. Enable **Developer mode** (toggle in top-right).
-4. Click **Load unpacked** and select the project folder.
-5. The **Leads Tracker** icon will appear in your toolbar.
-
----
-
-## ⚙️ Configuration
-
-1. Create a Firebase project at [console.firebase.google.com](https://console.firebase.google.com).
-2. Enable **Realtime Database** and set rules to allow reads/writes:
-
-   ```json
-   {
-     "rules": {
-       ".read": true,
-       ".write": true
-     }
-   }
-   ```
-3. Copy your database URL and update `index.js`:
-
-   ```js
-   const firebaseConfig = {
-     databaseURL: "https://YOUR-PROJECT.firebaseio.com/"
-   }
-   ```
 
 ---
 
