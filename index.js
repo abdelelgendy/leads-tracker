@@ -2,7 +2,9 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebas
 import { getDatabase, 
     ref,
     push,
-    onValue } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
+    onValue,
+    remove } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
+
 // Initialize Firebase
 const firebaseConfig = {
     databaseURL: "https://leads-tracker-app-14586-default-rtdb.firebaseio.com/",
@@ -20,9 +22,12 @@ const toastEl = document.getElementById("toast")
 
 // Show all the leads on the page
 onValue(referenceInDB, function(snapshot) {
-    const snapshotValues = snapshot.val()
-    const leads = Object.values(snapshotValues)
-    render(leads)
+    const snapshotDoesExist = snapshot.exists()
+    if (snapshotDoesExist) {
+        const snapshotValues = snapshot.val()
+        const leads = Object.values(snapshotValues)
+        render(leads)
+    }
 });
 
 function render(leads) {
@@ -48,6 +53,10 @@ function render(leads) {
 deleteBtn.addEventListener("dblclick", function() {
     if (confirm("Are you sure you want to delete all leads?")) {
         showToast("All leads deleted.")
+        // Remove all leads from the database
+        remove(referenceInDB)
+        // Clear the input box
+        ulEl.innerHTML = ""
     }
 })
 
