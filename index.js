@@ -1,3 +1,13 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+import { getDatabase } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-analytics.js";
+// Initialize Firebase
+const firebaseConfig = {
+    databaseURL: "https://leads-tracker-app-14586-default-rtdb.firebaseio.com/",
+}
+  const app = initializeApp(firebaseConfig);
+  const database = getDatabase(app)
+
 // Store all the leads here
 let myLeads = []
 
@@ -6,31 +16,11 @@ const inputEl = document.getElementById("input-el")
 const inputBtn = document.getElementById("input-btn")
 const ulEl = document.getElementById("ul-el")
 const deleteBtn = document.getElementById("delete-btn")
-const leadsFromLocalStorage = JSON.parse(localStorage.getItem("myLeads"))
 const tabBtn = document.getElementById("tab-btn")
 const toastEl = document.getElementById("toast")
 
 // If there are leads saved from before, load them up!
-if (leadsFromLocalStorage) {
-    myLeads = leadsFromLocalStorage
-    render(myLeads)
-}
 
-// Save the current tab when the button is clicked
-tabBtn.addEventListener("click", function(){    
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
-        const url = tabs[0].url
-        // Only save if it's not already in the list
-        if (!myLeads.includes(url)) {
-            myLeads.push(url)
-            localStorage.setItem("myLeads", JSON.stringify(myLeads))
-            render(myLeads)
-            showToast("Tab saved!")
-        } else {
-            showToast("This tab is already saved.")
-        }
-    })
-})
 
 // Show all the leads on the page
 function render(leads) {
@@ -55,7 +45,6 @@ function render(leads) {
 // Double-click the delete button to clear everything
 deleteBtn.addEventListener("dblclick", function() {
     if (confirm("Are you sure you want to delete all leads?")) {
-        localStorage.clear()
         myLeads = []
         render(myLeads)
         showToast("All leads deleted.")
@@ -75,7 +64,6 @@ function saveInput() {
         if (!myLeads.includes(url)) {
             myLeads.push(url)
             inputEl.value = ""
-            localStorage.setItem("myLeads", JSON.stringify(myLeads))
             render(myLeads)
             showToast("Lead saved!")
         } else {
