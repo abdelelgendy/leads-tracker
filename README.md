@@ -91,19 +91,3 @@ A lightweight Chrome extension to effortlessly save, organize, and revisit your 
 * **Styling**: CSS3 with Flexbox and gradients
 
 ---
-
-## 🤝 Contributing
-
-1. Fork the repo 🍴
-2. Create your feature branch: `git checkout -b feature/YourFeature`
-3. Commit your changes: `git commit -m "Add some feature"`
-4. Push to your branch: `git push origin feature/YourFeature`
-5. Open a pull request 📝
-
-Please ensure all new features include tests and documentation updates.
-
----
-
-## 📜 License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
