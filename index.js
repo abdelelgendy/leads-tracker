@@ -1,16 +1,15 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-import { getDatabase } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-analytics.js";
+import { getDatabase, 
+    ref,
+    push,
+    onValue } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
 // Initialize Firebase
 const firebaseConfig = {
     databaseURL: "https://leads-tracker-app-14586-default-rtdb.firebaseio.com/",
 }
-  const app = initializeApp(firebaseConfig);
-  const database = getDatabase(app)
-
-// Store all the leads here
-let myLeads = []
-
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app)
+const referenceInDB = ref(database, "leads")
 // Grab all the elements we need from the page
 const inputEl = document.getElementById("input-el")
 const inputBtn = document.getElementById("input-btn")
@@ -19,10 +18,13 @@ const deleteBtn = document.getElementById("delete-btn")
 const tabBtn = document.getElementById("tab-btn")
 const toastEl = document.getElementById("toast")
 
-// If there are leads saved from before, load them up!
-
-
 // Show all the leads on the page
+onValue(referenceInDB, function(snapshot) {
+    const snapshotValues = snapshot.val()
+    const leads = Object.values(snapshotValues)
+    render(leads)
+});
+
 function render(leads) {
     let listItems = ""
     for (let i = 0; i < leads.length; i++) {
@@ -45,8 +47,6 @@ function render(leads) {
 // Double-click the delete button to clear everything
 deleteBtn.addEventListener("dblclick", function() {
     if (confirm("Are you sure you want to delete all leads?")) {
-        myLeads = []
-        render(myLeads)
         showToast("All leads deleted.")
     }
 })
@@ -59,16 +59,14 @@ inputEl.addEventListener("keydown", function(e) {
 
 function saveInput() {
     const url = inputEl.value.trim()
-    // Make sure it's a real URL and not already saved
+    // Make sure it's a real URL
     if (url && url.startsWith("http")) {
-        if (!myLeads.includes(url)) {
-            myLeads.push(url)
-            inputEl.value = ""
-            render(myLeads)
-            showToast("Lead saved!")
-        } else {
-            showToast("This link is already saved.")
-        }
+        // Push the new lead to the Firebase database
+        push(referenceInDB,inputEl.value)
+        // Clear the input box after saving
+        inputEl.value = ""
+        showToast("Lead saved!")
+        // Optionally, re-fetch and render leads from the database here
     } else {
         showToast("Please enter a valid URL starting with http or https.")
     }
